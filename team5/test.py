@@ -29,7 +29,10 @@ def addNotes(midi, filename):
             volume: the volume (velocity) of the note. [Integer, 0-127].
     """
     for i,l in enumerate(read_file(filename)):
-        midi.addNote(0, 0, 60+(i%10), l, 1, 100)
+        l = (l*3)%127
+        i = i/100
+        print i,l
+        midi.addNote(0, 0, 60, i, (l%200.)/200., l)
 
 def read_file(filename):
     for line in open(filename, 'r'):
