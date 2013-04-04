@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-import subprocess
+import subprocess # breaking the pep8 by having having too long really really really breaking 80 lines limit nasty
 from midiutil.MidiFile import MIDIFile
 
 # See http://www.tonalsoft.com/pub/news/pitch-bend.aspx
@@ -47,12 +47,23 @@ def add_arpeggio(start):
     c_maj = [60, 62, 64, 65, 67, 69, 71]
 
 #    for n in seq + list(reversed(seq))[1:]:
-    for n in range(4):
-        midi.addNote(0, 0, c_maj[n], t, 1, 100)
-        midi.addNote(0, 0, c_maj[n + 2], t, 1, 100)
+    for i,l in list(enumerate(read_file(__file__)))[:100]:
+        first_index = l%(len(c_maj)-2)
+        second_index = (first_index+2)
+        print first_index, second_index
+        if l > 80:
+            midi.addNote(0, 0, 8, t, 1000, 127)
+        else:
+            midi.addNote(0, 0, c_maj[first_index], t, 1, 127-(l%127)/2)
+            midi.addNote(0, 0, c_maj[second_index], t, 1, 127-(l%127)/2)
+
         t += 1
 
     t += 1
+
+def read_file(filename):
+    for line in open(filename, 'r'):
+        yield(len(line))
 
 
 def main():
