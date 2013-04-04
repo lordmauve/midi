@@ -42,10 +42,16 @@ t = 0
 
 def add_arpeggio(start):
     global t
+    # seq = [0, 4, 8, 12] #, 9, 12]
     seq = [0, 2, 4, 7, 9, 12]
-    for n in seq + list(reversed(seq))[1:]:
-        midi.addNote(0, 0, start + n, t, 1, 100)
+    c_maj = [60, 62, 64, 65, 67, 69, 71]
+
+#    for n in seq + list(reversed(seq))[1:]:
+    for n in range(4):
+        midi.addNote(0, 0, c_maj[n], t, 1, 100)
+        midi.addNote(0, 0, c_maj[n + 2], t, 1, 100)
         t += 1
+
     t += 1
 
 
@@ -56,8 +62,9 @@ def main():
     addTrack(myMidi, 0, 'track-1', 120)
     addTrack(myMidi, 1, 'track-2', 120)
 
-    for i in range(3):
-        add_arpeggio(60 + i)
+    seq = [0, 2, 4, 7, 9, 12]
+    for i in seq:
+        add_arpeggio(i)
 
     writeFile(myMidi, 'output.mid')
     subprocess.call(['timidity', 'output.mid'])
